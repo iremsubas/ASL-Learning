@@ -1,0 +1,25 @@
+name: Check external media availability
+
+on:
+  push:
+    branches:
+      - claude/asl-learning-app-llc69y
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Curl every hotlinked GIF and a sample letter diagram
+        run: |
+          ids=$(grep -oE 'gif: "[^"]+"' js/data.js | cut -d'"' -f2)
+          for id in $ids; do
+            m=$(curl -sL -o /dev/null -w "%{http_code} %{size_download} %{content_type}" "https://media.giphy.com/media/$id/giphy.gif")
+            i=$(curl -sL -o /dev/null -w "%{http_code} %{size_download} %{content_type}" "https://i.giphy.com/$id.gif")
+            echo "RESULT $id | media.giphy.com: $m | i.giphy.com: $i"
+          done
+          for letter in A M Z; do
+            c=$(curl -sL -o /dev/null -w "%{http_code} %{size_download} %{content_type}" "https://commons.wikimedia.org/wiki/Special:FilePath/Sign_language_$letter.svg?width=200")
+            echo "RESULT letter-$letter | commons: $c"
+          done

@@ -81,18 +81,6 @@ function createSignCard(item) {
   card.append(toggle, glyph);
   if (visual) card.appendChild(visual);
   card.append(description, tip);
-
-  if (item.id.startsWith("word-")) {
-    const slug = item.label.toLowerCase().split("/")[0].trim()
-      .replace(/[^a-z ]/g, "").replace(/ +/g, "-");
-    const watch = document.createElement("a");
-    watch.className = "watch-link";
-    watch.href = `https://www.signasl.org/sign/${slug}`;
-    watch.target = "_blank";
-    watch.rel = "noopener";
-    watch.textContent = "▶ More videos of this sign ↗";
-    card.appendChild(watch);
-  }
   return card;
 }
 
@@ -101,19 +89,168 @@ function renderGrid(containerId, items) {
   items.forEach((item) => grid.appendChild(createSignCard(item)));
 }
 
-function renderWords() {
-  const container = document.getElementById("words-container");
-  WORDS.forEach((group) => {
-    const title = document.createElement("h3");
-    title.className = "category-title";
-    title.textContent = group.category;
-    container.appendChild(title);
+// ---------- Word swipe feed (TikTok/Duolingo style) ----------
+//
+// One full-size video card at a time. Swipe up / left (or ✕) for the next
+// sign, swipe down for the previous one, swipe right (or ✓) to mark it
+// learned and advance. The ⓘ button reveals the how-to text on demand.
 
-    const grid = document.createElement("div");
-    grid.className = "card-grid";
-    group.items.forEach((item) => grid.appendChild(createSignCard(item)));
-    container.appendChild(grid);
+const SWIPE_THRESHOLD = 80;
+
+const feedState = {
+  items: WORDS.flatMap((group) => group.items),
+  index: 0,
+  busy: false,
+};
+
+function signaslUrl(item) {
+  const slug = item.label.toLowerCase().split("/")[0].trim()
+    .replace(/[^a-z ]/g, "").replace(/ +/g, "-");
+  return `https://www.signasl.org/sign/${slug}`;
+}
+
+function buildFeedCard(item) {
+  const card = document.createElement("div");
+  card.className = "feed-card";
+
+  const media = document.createElement("div");
+  media.className = "feed-media";
+  const visual = createSignVisual(item, { autoplay: true });
+  if (visual) media.appendChild(visual);
+
+  const caption = document.createElement("div");
+  caption.className = "feed-caption";
+  caption.textContent = item.label;
+
+  const badge = document.createElement("div");
+  badge.className = "feed-known-badge";
+  badge.textContent = "✓ Known";
+  badge.hidden = !learned.has(item.id);
+
+  card.append(media, caption, badge);
+  return card;
+}
+
+function preloadNextGif() {
+  const next = feedState.items[(feedState.index + 1) % feedState.items.length];
+  if (next && next.gif) new Image().src = giphyMediaUrl(next.gif);
+}
+
+function renderFeedProgress() {
+  const known = feedState.items.filter((item) => learned.has(item.id)).length;
+  document.getElementById("feed-progress").textContent =
+    `${feedState.index + 1} / ${feedState.items.length} · ${known} known`;
+}
+
+function showFeedCard(enterClass) {
+  const stage = document.getElementById("feed-stage");
+  stage.innerHTML = "";
+  const card = buildFeedCard(feedState.items[feedState.index]);
+  if (enterClass) card.classList.add(enterClass);
+  stage.appendChild(card);
+  requestAnimationFrame(() => card.classList.remove("enter-up", "enter-down"));
+  renderFeedProgress();
+  attachSwipe(card);
+  preloadNextGif();
+  closeFeedSheet();
+}
+
+function advanceFeed(step, flyClass) {
+  if (feedState.busy) return;
+  feedState.busy = true;
+  const card = document.querySelector("#feed-stage .feed-card");
+  if (card) card.classList.add(flyClass);
+  setTimeout(() => {
+    const size = feedState.items.length;
+    feedState.index = (feedState.index + step + size) % size;
+    feedState.busy = false;
+    showFeedCard(step >= 0 ? "enter-up" : "enter-down");
+  }, 260);
+}
+
+function markKnownAndAdvance() {
+  const item = feedState.items[feedState.index];
+  learned.add(item.id);
+  saveLearned(learned);
+  const card = document.querySelector("#feed-stage .feed-card");
+  if (card) card.classList.add("flash-known");
+  advanceFeed(1, "fly-right");
+}
+
+function attachSwipe(card) {
+  let startX = 0;
+  let startY = 0;
+  let dragging = false;
+
+  card.addEventListener("pointerdown", (event) => {
+    dragging = true;
+    startX = event.clientX;
+    startY = event.clientY;
+    card.setPointerCapture(event.pointerId);
+    card.classList.add("dragging");
   });
+
+  card.addEventListener("pointermove", (event) => {
+    if (!dragging) return;
+    const dx = event.clientX - startX;
+    const dy = event.clientY - startY;
+    card.style.transform = `translate(${dx}px, ${dy}px) rotate(${dx * 0.04}deg)`;
+  });
+
+  const release = (event) => {
+    if (!dragging) return;
+    dragging = false;
+    card.classList.remove("dragging");
+    const dx = event.clientX - startX;
+    const dy = event.clientY - startY;
+    card.style.transform = "";
+
+    if (Math.abs(dx) > Math.abs(dy)) {
+      if (dx > SWIPE_THRESHOLD) return markKnownAndAdvance();
+      if (dx < -SWIPE_THRESHOLD) return advanceFeed(1, "fly-left");
+    } else {
+      if (dy < -SWIPE_THRESHOLD) return advanceFeed(1, "fly-up");
+      if (dy > SWIPE_THRESHOLD) return advanceFeed(-1, "fly-down");
+    }
+  };
+  card.addEventListener("pointerup", release);
+  card.addEventListener("pointercancel", release);
+}
+
+function openFeedSheet() {
+  const item = feedState.items[feedState.index];
+  document.getElementById("sheet-title").textContent = item.label;
+  document.getElementById("sheet-description").textContent = item.description;
+  document.getElementById("sheet-tip").textContent = `💡 ${item.tip}`;
+  document.getElementById("sheet-watch").href = signaslUrl(item);
+  document.getElementById("feed-sheet").hidden = false;
+}
+
+function closeFeedSheet() {
+  document.getElementById("feed-sheet").hidden = true;
+}
+
+function setupFeed() {
+  document.getElementById("feed-skip").addEventListener("click", () => advanceFeed(1, "fly-left"));
+  document.getElementById("feed-know").addEventListener("click", markKnownAndAdvance);
+  document.getElementById("feed-info").addEventListener("click", () => {
+    const sheet = document.getElementById("feed-sheet");
+    sheet.hidden ? openFeedSheet() : closeFeedSheet();
+  });
+  document.getElementById("sheet-close").addEventListener("click", closeFeedSheet);
+  document.getElementById("feed-sheet").addEventListener("click", (event) => {
+    if (event.target === event.currentTarget) closeFeedSheet();
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (!document.getElementById("view-words").classList.contains("active")) return;
+    if (event.key === "ArrowUp") advanceFeed(1, "fly-up");
+    else if (event.key === "ArrowLeft") advanceFeed(1, "fly-left");
+    else if (event.key === "ArrowDown") advanceFeed(-1, "fly-down");
+    else if (event.key === "ArrowRight") markKnownAndAdvance();
+  });
+
+  showFeedCard();
 }
 
 // ---------- Home progress ----------
@@ -409,7 +546,7 @@ function setupFingerspelling() {
 
 renderGrid("alphabet-grid", ALPHABET);
 renderGrid("numbers-grid", NUMBERS);
-renderWords();
+setupFeed();
 setupFlashcards();
 renderQuizIntro();
 setupFingerspelling();

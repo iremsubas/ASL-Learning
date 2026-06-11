@@ -52,7 +52,7 @@
         <a class="hero-card" href="#words">
           <div class="emoji">💬</div>
           <h3>3. First words &amp; phrases</h3>
-          <p>Greetings, courtesy signs, family, and everyday essentials.</p>
+          <p>Swipe through real sign videos — right if you know it, up for the next one.</p>
         </a>
         <a class="hero-card" href="#flashcards">
           <div class="emoji">🃏</div>
@@ -116,16 +116,30 @@
       <div class="card-grid" id="numbers-grid"></div>
     </section>
 
-    <!-- ================= WORDS ================= -->
+    <!-- ================= WORDS (swipe feed) ================= -->
     <section id="view-words" class="view">
-      <h2>First Words &amp; Phrases 💬</h2>
-      <p class="section-intro">
-        These are the signs you'll use most as a beginner. Most cards show a video
-        clip of a real signer — watch the palm direction and arm movement, then copy
-        it. Remember to match your facial expression to the meaning — a questioning
-        face for questions, a warm smile with greetings.
-      </p>
-      <div id="words-container"></div>
+      <div class="feed">
+        <div class="feed-top">
+          <span class="feed-title">💬 Words</span>
+          <span class="feed-progress" id="feed-progress"></span>
+        </div>
+        <div class="feed-stage" id="feed-stage"></div>
+        <div class="feed-actions">
+          <button class="feed-btn skip" id="feed-skip" title="Still learning — next card">✕</button>
+          <button class="feed-btn info" id="feed-info" title="How to make this sign">ⓘ</button>
+          <button class="feed-btn know" id="feed-know" title="I know this one!">✓</button>
+        </div>
+        <div class="feed-hint">Swipe up for next · swipe right if you know it · swipe left to keep practicing</div>
+      </div>
+      <div class="feed-sheet" id="feed-sheet" hidden>
+        <div class="feed-sheet-inner">
+          <h3 id="sheet-title"></h3>
+          <p id="sheet-description"></p>
+          <p class="tip" id="sheet-tip"></p>
+          <a id="sheet-watch" class="watch-link" target="_blank" rel="noopener">▶ More videos of this sign ↗</a>
+          <button class="secondary" id="sheet-close">Close</button>
+        </div>
+      </div>
     </section>
 
     <!-- ================= FLASHCARDS ================= -->

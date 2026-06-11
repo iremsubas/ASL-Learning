@@ -279,6 +279,7 @@ function createSignAnimation(anim, options = {}) {
       hands.forEach((hand) => {
         const from = hand.frames[i];
         const to = hand.frames[Math.min(i + 1, frameCount - 1)];
+        if (!from || !to) return;
         setHandShape(hand, (eased < 0.5 ? from[3] : to[3]) || hand.shape);
         setHandTransform(
           hand,
@@ -309,6 +310,7 @@ function createSignAnimation(anim, options = {}) {
       controls.appendChild(btn);
     }
     highlightFrame(0);
+    if (options.autoplay) play();
   }
 
   root.append(stage, controls);

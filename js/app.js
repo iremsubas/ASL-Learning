@@ -81,6 +81,18 @@ function createSignCard(item) {
   card.append(toggle, glyph);
   if (visual) card.appendChild(visual);
   card.append(description, tip);
+
+  if (item.id.startsWith("word-")) {
+    const slug = item.label.toLowerCase().split("/")[0].trim()
+      .replace(/[^a-z ]/g, "").replace(/ +/g, "-");
+    const watch = document.createElement("a");
+    watch.className = "watch-link";
+    watch.href = `https://www.signasl.org/sign/${slug}`;
+    watch.target = "_blank";
+    watch.rel = "noopener";
+    watch.textContent = "▶ More videos of this sign ↗";
+    card.appendChild(watch);
+  }
   return card;
 }
 
@@ -256,7 +268,8 @@ function renderQuestion() {
   // because their diagrams are simplified.
   const visual = createSignVisual(answer, { compact: true });
   const descriptionQuestion = `Which ${answer.type.toLowerCase()} is signed like this? “${answer.description}”`;
-  if (visual && answer.type !== "Word") {
+  // Words with a real signer clip get a "watch and identify" question too.
+  if (visual && (answer.type !== "Word" || answer.gif)) {
     question.textContent = `Which ${answer.type.toLowerCase()} is this?`;
     // If the hotlinked diagram can't load (e.g. offline), fall back to text.
     const img = visual.querySelector("img");

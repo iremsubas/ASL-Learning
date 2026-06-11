@@ -588,6 +588,56 @@ button.chip.selected {
   font-weight: 700;
 }
 
+.gif-visual {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.3rem 0;
+}
+
+.gif-visual img {
+  width: 100%;
+  max-width: 240px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: #fbfcff;
+  min-height: 120px;
+  object-fit: cover;
+}
+
+.gif-visual.compact img {
+  max-width: 200px;
+}
+
+.gif-note {
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  font-style: italic;
+}
+
+.gif-credit {
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+  text-decoration: none;
+}
+
+.gif-credit:hover {
+  color: var(--brand);
+  text-decoration: underline;
+}
+
+.watch-link {
+  font-size: 0.85rem;
+  color: var(--brand);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.watch-link:hover {
+  text-decoration: underline;
+}
+
 .quiz-visual {
   margin: 0 auto 1rem;
 }

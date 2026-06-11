@@ -257,6 +257,42 @@ const WORDS = [
   },
 ];
 
+// Real signer video clips (GIFs) for word signs, hotlinked from GIPHY.
+// Most come from "Sign with Robert", an ASL education series by Deaf actor
+// and ASL consultant Robert DeMayo, published on GIPHY for sharing/embedding.
+// Words without an entry fall back to the simplified keyframe animation.
+const WORD_VIDEOS = {
+  "word-hello": { gif: "3o7TKNKOfKlIhbD3gY", by: "Sign with Robert", page: "https://giphy.com/gifs/signwithrobert-sign-with-robert-3o7TKNKOfKlIhbD3gY" },
+  "word-goodbye": { gif: "3o7TKzb3i29i86BPJm", by: "Sign with Robert", page: "https://giphy.com/gifs/signwithrobert-sign-with-robert-3o7TKzb3i29i86BPJm" },
+  "word-name": { gif: "3o7TKDJBonanzESryE", by: "Sign with Robert", page: "https://giphy.com/gifs/signwithrobert-sign-with-robert-3o7TKDJBonanzESryE", note: "Clip shows the question “What's your name?”" },
+  "word-nice-to-meet-you": { gif: "7R4etle4klLTdlHYmu", by: "BuzzFeed", page: "https://giphy.com/gifs/buzzfeed-asl-international-day-of-sign-languages-i-learned-american-language-for-7R4etle4klLTdlHYmu" },
+  "word-please": { gif: "l0MYEXSLkUipy1zVK", by: "Sign with Robert", page: "https://giphy.com/gifs/signwithrobert-sign-with-robert-l0MYEXSLkUipy1zVK" },
+  "word-thank-you": { gif: "l0MYrlUnFtq25TQR2", by: "Sign with Robert", page: "https://giphy.com/gifs/signwithrobert-sign-with-robert-l0MYrlUnFtq25TQR2" },
+  "word-sorry": { gif: "3o7TKq0oNLk8ljH7vG", by: "Sign with Robert", page: "https://giphy.com/gifs/signwithrobert-sign-with-robert-3o7TKq0oNLk8ljH7vG" },
+  "word-yes": { gif: "l4Jz0THKhQLo61NBK", by: "Sign with Robert", page: "https://giphy.com/gifs/signwithrobert-sign-with-robert-l4Jz0THKhQLo61NBK" },
+  "word-no": { gif: "l4Jz4faxuS1FiSEV2", by: "Sign with Robert", page: "https://giphy.com/gifs/signwithrobert-sign-with-robert-l4Jz4faxuS1FiSEV2" },
+  "word-help": { gif: "l0MYQo0iDSTlnRifK", by: "Sign with Robert", page: "https://giphy.com/gifs/signwithrobert-sign-with-robert-l0MYQo0iDSTlnRifK" },
+  "word-i-love-you": { gif: "UNyHCOe7UFeJa", by: "ASL Nook", page: "https://giphy.com/gifs/i-love-you-asl-sign-language-UNyHCOe7UFeJa" },
+  "word-friend": { gif: "3o7TKxJ9b7iHDWj0pa", by: "Sign with Robert", page: "https://giphy.com/gifs/signwithrobert-sign-with-robert-3o7TKxJ9b7iHDWj0pa" },
+  "word-mother": { gif: "3o7TKOMlsNLawB8B9K", by: "Sign with Robert", page: "https://giphy.com/gifs/signwithrobert-sign-with-robert-3o7TKOMlsNLawB8B9K" },
+  "word-father": { gif: "l0HlNzPBWFE3c2Hao", by: "Sign with Robert", page: "https://giphy.com/gifs/signwithrobert-sign-with-robert-l0HlNzPBWFE3c2Hao" },
+  "word-family": { gif: "l0HlPEVDldKdcRAsM", by: "Sign with Robert", page: "https://giphy.com/gifs/signwithrobert-sign-with-robert-l0HlPEVDldKdcRAsM" },
+  "word-eat": { gif: "l3vRhFBHY2JT5QIdq", by: "Sign with Robert", page: "https://giphy.com/gifs/signwithrobert-sign-with-robert-l3vRhFBHY2JT5QIdq" },
+  "word-water": { gif: "26DOtNnaZuvgS5wTS", by: "Sign with Robert", page: "https://giphy.com/gifs/signwithrobert-sign-with-robert-26DOtNnaZuvgS5wTS" },
+  "word-bathroom": { gif: "26DONjlzKa7fM9HUI", by: "Sign with Robert", page: "https://giphy.com/gifs/signwithrobert-sign-with-robert-26DONjlzKa7fM9HUI" },
+  "word-again": { gif: "Rfek7db5VppCEnUDFa", by: "ASLwithS3S3", page: "https://giphy.com/gifs/asl-again-Rfek7db5VppCEnUDFa" },
+};
+
+WORDS.forEach((group) => group.items.forEach((item) => {
+  const video = WORD_VIDEOS[item.id];
+  if (video) {
+    item.gif = video.gif;
+    item.gifBy = video.by;
+    item.gifPage = video.page;
+    if (video.note) item.gifNote = video.note;
+  }
+}));
+
 // Flat list of every learnable item, used by flashcards, the quiz, and progress tracking.
 const ALL_ITEMS = [
   ...ALPHABET.map((item) => ({ ...item, type: "Letter" })),

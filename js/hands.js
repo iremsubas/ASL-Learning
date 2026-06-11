@@ -315,6 +315,47 @@ function createSignAnimation(anim, options = {}) {
   return root;
 }
 
+// ---------- Real signer videos (GIPHY clips) ----------
+
+function giphyMediaUrl(id) {
+  return `https://media.giphy.com/media/${id}/giphy.gif`;
+}
+
+// Auto-playing clip of a real signer; falls back to the simplified
+// keyframe animation (or nothing) if the clip can't load.
+function createWordVideo(item, options = {}) {
+  const wrap = document.createElement("div");
+  wrap.className = "gif-visual" + (options.compact ? " compact" : "");
+
+  const img = document.createElement("img");
+  img.src = giphyMediaUrl(item.gif);
+  img.alt = `Video clip of the ASL sign for ${item.label}`;
+  img.loading = "lazy";
+  img.addEventListener("error", () => {
+    const fallback = item.anim ? createSignAnimation(item.anim, options) : null;
+    if (fallback) wrap.replaceWith(fallback);
+    else wrap.remove();
+  });
+  wrap.appendChild(img);
+
+  if (item.gifNote) {
+    const note = document.createElement("div");
+    note.className = "gif-note";
+    note.textContent = item.gifNote;
+    wrap.appendChild(note);
+  }
+
+  const credit = document.createElement("a");
+  credit.className = "gif-credit";
+  credit.href = item.gifPage || "https://giphy.com";
+  credit.target = "_blank";
+  credit.rel = "noopener";
+  credit.textContent = `🎬 ${item.gifBy} · via GIPHY`;
+  wrap.appendChild(credit);
+
+  return wrap;
+}
+
 // ---------- Public factory ----------
 //
 // Returns a visual element for any learnable item, or null if none applies.
@@ -341,7 +382,11 @@ function createSignVisual(item, options = {}) {
     return wrap;
   }
 
-  if (item.anim) { // words: animated scene
+  if (item.gif) { // words: real signer clip, with animation fallback
+    return createWordVideo(item, options);
+  }
+
+  if (item.anim) { // words without a clip: simplified animated scene
     return createSignAnimation(item.anim, options);
   }
 

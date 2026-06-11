@@ -54,6 +54,8 @@ function createSignCard(item) {
   glyph.className = "glyph";
   glyph.textContent = item.label;
 
+  const visual = createSignVisual(item);
+
   const description = document.createElement("p");
   description.textContent = item.description;
 
@@ -76,7 +78,9 @@ function createSignCard(item) {
     card.classList.toggle("learned", learned.has(item.id));
   });
 
-  card.append(toggle, glyph, description, tip);
+  card.append(toggle, glyph);
+  if (visual) card.appendChild(visual);
+  card.append(description, tip);
   return card;
 }
 
@@ -152,6 +156,13 @@ function renderFlashcard() {
   document.getElementById("card-front").textContent = item.label;
   document.getElementById("card-back").textContent = item.description;
   document.getElementById("card-tip").textContent = `💡 ${item.tip}`;
+
+  const visualBox = document.getElementById("card-visual");
+  visualBox.innerHTML = "";
+  const visual = createSignVisual(item, { compact: true });
+  if (visual) visualBox.appendChild(visual);
+  // Don't let taps on the animation controls flip the card.
+  visualBox.onclick = (event) => event.stopPropagation();
   document.getElementById("card-counter").textContent =
     `Card ${flashcardState.index + 1} of ${flashcardState.deck.length}`;
 }
@@ -240,7 +251,19 @@ function renderQuestion() {
 
   const question = document.createElement("p");
   question.className = "quiz-question";
-  question.textContent = `Which ${answer.type.toLowerCase()} is signed like this? “${answer.description}”`;
+  // Letters and numbers have a self-explanatory visual, so showing the
+  // description would give the answer away. Words keep the description
+  // because their diagrams are simplified.
+  const visual = createSignVisual(answer, { compact: true });
+  const descriptionQuestion = `Which ${answer.type.toLowerCase()} is signed like this? “${answer.description}”`;
+  if (visual && answer.type !== "Word") {
+    question.textContent = `Which ${answer.type.toLowerCase()} is this?`;
+    // If the hotlinked diagram can't load (e.g. offline), fall back to text.
+    const img = visual.querySelector("img");
+    if (img) img.addEventListener("error", () => { question.textContent = descriptionQuestion; });
+  } else {
+    question.textContent = descriptionQuestion;
+  }
 
   const optionsBox = document.createElement("div");
   optionsBox.className = "quiz-options";
@@ -285,7 +308,13 @@ function renderQuestion() {
     optionsBox.appendChild(button);
   });
 
-  panel.append(progress, question, optionsBox, feedback);
+  panel.appendChild(progress);
+  panel.appendChild(question);
+  if (visual) {
+    visual.classList.add("quiz-visual");
+    panel.appendChild(visual);
+  }
+  panel.append(optionsBox, feedback);
 }
 
 function renderResults() {
@@ -341,10 +370,14 @@ function renderFingerspelling(text) {
     glyph.className = "glyph";
     glyph.textContent = item.label;
 
+    const visual = createSignVisual({ ...item, type: "Letter" }, { compact: true });
+
     const description = document.createElement("p");
     description.textContent = item.description;
 
-    card.append(glyph, description);
+    card.appendChild(glyph);
+    if (visual) card.appendChild(visual);
+    card.appendChild(description);
     output.appendChild(card);
   });
 }

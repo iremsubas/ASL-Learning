@@ -2,6 +2,12 @@
 // Descriptions cover the dominant hand unless both hands are mentioned.
 // Text is a study aid only — learners should confirm each sign with video
 // resources or fluent signers (see the Resources section on the Home page).
+//
+// Letters are illustrated with public-domain diagrams hotlinked from
+// Wikimedia Commons (see js/hands.js). Numbers carry a `shape` key into the
+// generated hand diagrams, and words carry an `anim` spec: simplified hands
+// animated through 2–4 keyframes [x, y, rotationDeg, optionalShapeOverride]
+// on a 220x240 head-and-shoulders scene.
 
 const ALPHABET = [
   { id: "letter-a", label: "A", description: "Make a fist with your fingers folded down. Rest your thumb against the side of your index finger, palm facing out.", tip: "A fist with the thumb alongside — not wrapped over the fingers." },
@@ -33,60 +39,220 @@ const ALPHABET = [
 ];
 
 const NUMBERS = [
-  { id: "number-1", label: "1", description: "Hold up your index finger, palm facing toward you. Close your other fingers.", tip: "Just like counting 'one'. ☝️" },
-  { id: "number-2", label: "2", description: "Hold up your index and middle fingers, spread apart, palm facing toward you.", tip: "Like the letter V, but palm in." },
-  { id: "number-3", label: "3", description: "Hold up your thumb, index, and middle fingers, palm facing toward you.", tip: "Thumb counts! Not the same as 'W'." },
-  { id: "number-4", label: "4", description: "Hold up four fingers, spread apart, with your thumb tucked against your palm. Palm faces toward you.", tip: "All fingers, no thumb." },
-  { id: "number-5", label: "5", description: "Hold up all five fingers, spread apart, palm facing toward you.", tip: "A full open hand. 🖐️" },
-  { id: "number-6", label: "6", description: "Touch your thumb to your pinky. Hold your other three fingers up and spread.", tip: "Looks like 'W' — the smallest finger touches for the number after 5." },
-  { id: "number-7", label: "7", description: "Touch your thumb to your ring finger. Hold your other three fingers up.", tip: "One finger over from 6." },
-  { id: "number-8", label: "8", description: "Touch your thumb to your middle finger. Hold your other three fingers up.", tip: "Two fingers over from 6." },
-  { id: "number-9", label: "9", description: "Touch your thumb to your index finger. Hold your other three fingers up.", tip: "Looks like the letter F." },
-  { id: "number-10", label: "10", description: "Make a thumbs-up fist and give it a little shake.", tip: "A shaking thumbs-up. 👍" },
+  { id: "number-1", label: "1", shape: "point1", description: "Hold up your index finger, palm facing toward you. Close your other fingers.", tip: "Just like counting 'one'. ☝️" },
+  { id: "number-2", label: "2", shape: "shapeV", description: "Hold up your index and middle fingers, spread apart, palm facing toward you.", tip: "Like the letter V, but palm in." },
+  { id: "number-3", label: "3", shape: "n3", description: "Hold up your thumb, index, and middle fingers, palm facing toward you.", tip: "Thumb counts! Not the same as 'W'." },
+  { id: "number-4", label: "4", shape: "n4", description: "Hold up four fingers, spread apart, with your thumb tucked against your palm. Palm faces toward you.", tip: "All fingers, no thumb." },
+  { id: "number-5", label: "5", shape: "open5", description: "Hold up all five fingers, spread apart, palm facing toward you.", tip: "A full open hand. 🖐️" },
+  { id: "number-6", label: "6", shape: "n6", description: "Touch your thumb to your pinky. Hold your other three fingers up and spread.", tip: "Looks like 'W' — the smallest finger touches for the number after 5." },
+  { id: "number-7", label: "7", shape: "n7", description: "Touch your thumb to your ring finger. Hold your other three fingers up.", tip: "One finger over from 6." },
+  { id: "number-8", label: "8", shape: "n8", description: "Touch your thumb to your middle finger. Hold your other three fingers up.", tip: "Two fingers over from 6." },
+  { id: "number-9", label: "9", shape: "n9", description: "Touch your thumb to your index finger. Hold your other three fingers up.", tip: "Looks like the letter F." },
+  { id: "number-10", label: "10", shape: "thumbsUp", description: "Make a thumbs-up fist and give it a little shake.", tip: "A shaking thumbs-up. 👍" },
 ];
 
 const WORDS = [
   {
     category: "Greetings",
     items: [
-      { id: "word-hello", label: "Hello", description: "Touch the side of your flat hand near your forehead, then move it outward — like a relaxed salute.", tip: "A friendly salute. 👋" },
-      { id: "word-goodbye", label: "Goodbye", description: "Open your hand, palm facing out, and wave it side to side — or fold your fingers down and up like a small wave.", tip: "Just like waving goodbye." },
-      { id: "word-name", label: "Name", description: "Make a U handshape with both hands (index and middle fingers extended together). Tap the fingers of your dominant hand on top of the other hand's fingers twice.", tip: "Two 'U' hands tap to make an X shape." },
-      { id: "word-nice-to-meet-you", label: "Nice to meet you", description: "NICE: slide your flat dominant palm across the upturned palm of your other hand. MEET: point both index fingers up and bring your hands together so they 'meet'.", tip: "Two signs in a row: a smooth slide, then two 'people' coming together." },
+      {
+        id: "word-hello", label: "Hello",
+        description: "Touch the side of your flat hand near your forehead, then move it outward — like a relaxed salute.",
+        tip: "A friendly salute. 👋",
+        anim: { hands: [{ shape: "flat", frames: [[140, 58, 18], [186, 44, 38]] }] },
+      },
+      {
+        id: "word-goodbye", label: "Goodbye",
+        description: "Open your hand, palm facing out, and wave it side to side — or fold your fingers down and up like a small wave.",
+        tip: "Just like waving goodbye.",
+        anim: { hands: [{ shape: "open5", frames: [[162, 78, -14], [162, 78, 14], [162, 78, -14]] }] },
+      },
+      {
+        id: "word-name", label: "Name",
+        description: "Make a U handshape with both hands (index and middle fingers extended together). Tap the fingers of your dominant hand on top of the other hand's fingers twice.",
+        tip: "Two 'U' hands tap to make an X shape.",
+        anim: {
+          hands: [
+            { shape: "shapeU", frames: [[128, 130, 115], [128, 144, 115], [128, 130, 115], [128, 144, 115]] },
+            { shape: "shapeU", mirror: true, frames: [[92, 152, -115], [92, 152, -115], [92, 152, -115], [92, 152, -115]] },
+          ],
+        },
+      },
+      {
+        id: "word-nice-to-meet-you", label: "Nice to meet you",
+        description: "NICE: slide your flat dominant palm across the upturned palm of your other hand. MEET: point both index fingers up and bring your hands together so they 'meet'.",
+        tip: "Two signs in a row: a smooth slide, then two 'people' coming together.",
+        anim: {
+          hands: [
+            { shape: "point1", frames: [[170, 152, 0], [122, 146, 0]] },
+            { shape: "point1", mirror: true, frames: [[50, 152, 0], [98, 146, 0]] },
+          ],
+        },
+      },
     ],
   },
   {
     category: "Courtesy",
     items: [
-      { id: "word-please", label: "Please", description: "Place your flat hand on your chest and move it in a circular motion.", tip: "A polite circle over your heart." },
-      { id: "word-thank-you", label: "Thank you", description: "Touch the fingertips of your flat hand to your chin, then move your hand forward and down toward the person you're thanking.", tip: "Like blowing a kiss from your chin." },
-      { id: "word-sorry", label: "Sorry", description: "Make a fist (the letter A) and rub it in a circle over the center of your chest.", tip: "A fist circling your heart — showing regret." },
-      { id: "word-yes", label: "Yes", description: "Make a fist (the letter S) and bob it up and down, like a head nodding.", tip: "Your fist nods 'yes' for you." },
-      { id: "word-no", label: "No", description: "Extend your index and middle fingers together with your thumb, then tap the fingers and thumb together, like a mouth snapping shut.", tip: "Fingers and thumb snap together — 'nope'." },
-      { id: "word-help", label: "Help", description: "Make a thumbs-up fist and place it on the flat, upturned palm of your other hand. Lift both hands upward together.", tip: "One hand lifts the other up." },
+      {
+        id: "word-please", label: "Please",
+        description: "Place your flat hand on your chest and move it in a circular motion.",
+        tip: "A polite circle over your heart.",
+        anim: { hands: [{ shape: "flat", frames: [[100, 148, 0], [116, 158, 8], [100, 168, 0], [84, 158, -8], [100, 148, 0]] }] },
+      },
+      {
+        id: "word-thank-you", label: "Thank you",
+        description: "Touch the fingertips of your flat hand to your chin, then move your hand forward and down toward the person you're thanking.",
+        tip: "Like blowing a kiss from your chin.",
+        anim: { hands: [{ shape: "flat", frames: [[112, 98, 0], [154, 134, 42]] }] },
+      },
+      {
+        id: "word-sorry", label: "Sorry",
+        description: "Make a fist (the letter A) and rub it in a circle over the center of your chest.",
+        tip: "A fist circling your heart — showing regret.",
+        anim: { hands: [{ shape: "fistA", frames: [[104, 146, 0], [118, 156, 0], [104, 166, 0], [90, 156, 0], [104, 146, 0]] }] },
+      },
+      {
+        id: "word-yes", label: "Yes",
+        description: "Make a fist (the letter S) and bob it up and down, like a head nodding.",
+        tip: "Your fist nods 'yes' for you.",
+        anim: { hands: [{ shape: "fistS", frames: [[148, 114, 0], [148, 138, 12], [148, 114, 0]] }] },
+      },
+      {
+        id: "word-no", label: "No",
+        description: "Extend your index and middle fingers together with your thumb, then tap the fingers and thumb together, like a mouth snapping shut.",
+        tip: "Fingers and thumb snap together — 'nope'.",
+        anim: { hands: [{ shape: "noOpen", frames: [[150, 108, 12], [150, 112, 12, "noClosed"], [150, 108, 12]] }] },
+      },
+      {
+        id: "word-help", label: "Help",
+        description: "Make a thumbs-up fist and place it on the flat, upturned palm of your other hand. Lift both hands upward together.",
+        tip: "One hand lifts the other up.",
+        anim: {
+          hands: [
+            { shape: "thumbsUp", frames: [[106, 152, 0], [106, 116, 0]] },
+            { shape: "flat", frames: [[106, 182, 96], [106, 146, 96]] },
+          ],
+        },
+      },
     ],
   },
   {
     category: "People & Family",
     items: [
-      { id: "word-i-love-you", label: "I love you", description: "Extend your thumb, index finger, and pinky while keeping your middle and ring fingers down. Palm faces out.", tip: "Combines the letters I, L, and Y in one hand. 🤟" },
-      { id: "word-friend", label: "Friend", description: "Hook your index fingers together, then reverse them and hook the other way.", tip: "Two fingers linked like close friends." },
-      { id: "word-mother", label: "Mother", description: "Open your hand wide (the number 5) and tap your thumb against your chin.", tip: "Female signs happen near the chin." },
-      { id: "word-father", label: "Father", description: "Open your hand wide (the number 5) and tap your thumb against your forehead.", tip: "Male signs happen near the forehead." },
-      { id: "word-family", label: "Family", description: "Make the letter F with both hands, touch them together in front of you, then circle them outward until your pinkies meet.", tip: "Two 'F' hands draw a family circle." },
+      {
+        id: "word-i-love-you", label: "I love you",
+        description: "Extend your thumb, index finger, and pinky while keeping your middle and ring fingers down. Palm faces out.",
+        tip: "Combines the letters I, L, and Y in one hand. 🤟",
+        anim: { hands: [{ shape: "shapeILY", frames: [[148, 116, 0]] }] },
+      },
+      {
+        id: "word-friend", label: "Friend",
+        description: "Hook your index fingers together, then reverse them and hook the other way.",
+        tip: "Two fingers linked like close friends.",
+        anim: {
+          hands: [
+            { shape: "hookX", frames: [[104, 128, 178], [112, 138, 158], [104, 128, 178]] },
+            { shape: "hookX", mirror: true, frames: [[116, 150, 2], [108, 140, -18], [116, 150, 2]] },
+          ],
+        },
+      },
+      {
+        id: "word-mother", label: "Mother",
+        description: "Open your hand wide (the number 5) and tap your thumb against your chin.",
+        tip: "Female signs happen near the chin.",
+        anim: { hands: [{ shape: "open5", frames: [[136, 96, -12], [128, 96, -12], [136, 96, -12]] }] },
+      },
+      {
+        id: "word-father", label: "Father",
+        description: "Open your hand wide (the number 5) and tap your thumb against your forehead.",
+        tip: "Male signs happen near the forehead.",
+        anim: { hands: [{ shape: "open5", frames: [[136, 48, -12], [128, 48, -12], [136, 48, -12]] }] },
+      },
+      {
+        id: "word-family", label: "Family",
+        description: "Make the letter F with both hands, touch them together in front of you, then circle them outward until your pinkies meet.",
+        tip: "Two 'F' hands draw a family circle.",
+        anim: {
+          hands: [
+            { shape: "shapeF", frames: [[120, 126, 14], [158, 140, 62], [150, 170, 120]] },
+            { shape: "shapeF", mirror: true, frames: [[100, 126, -14], [62, 140, -62], [70, 170, -120]] },
+          ],
+        },
+      },
     ],
   },
   {
     category: "Everyday Words",
     items: [
-      { id: "word-eat", label: "Eat / Food", description: "Pinch your fingertips and thumb together (a flattened O) and tap them to your mouth.", tip: "Bringing food to your mouth." },
-      { id: "word-water", label: "Water", description: "Make the letter W and tap your index finger against your chin a couple of times.", tip: "'W' at your chin, where you drink." },
-      { id: "word-more", label: "More", description: "Pinch the fingertips and thumbs of both hands together (flattened O shapes), then tap the fingertips of both hands against each other.", tip: "Two pinched hands tap — 'give me more'." },
-      { id: "word-bathroom", label: "Bathroom", description: "Make the letter T (thumb between index and middle fingers in a fist) and shake it side to side.", tip: "A shaking 'T' — for Toilet." },
-      { id: "word-learn", label: "Learn", description: "Hold one palm flat and facing up. With your other hand, 'grab' information off the palm and lift it to your forehead.", tip: "Picking up knowledge and putting it in your head." },
-      { id: "word-good", label: "Good", description: "Touch the fingertips of your flat hand to your chin, then bring the hand down to land on the upturned palm of your other hand.", tip: "Starts like 'thank you', lands in your palm." },
-      { id: "word-bad", label: "Bad", description: "Touch the fingertips of your flat hand to your chin, then flip the hand over and move it down and away.", tip: "Starts like 'good', but flips away." },
-      { id: "word-again", label: "Again / Repeat", description: "Hold one palm flat and facing up. Bend your other hand and tap its fingertips into the open palm.", tip: "Very useful when someone signs too fast!" },
+      {
+        id: "word-eat", label: "Eat / Food",
+        description: "Pinch your fingertips and thumb together (a flattened O) and tap them to your mouth.",
+        tip: "Bringing food to your mouth.",
+        anim: { hands: [{ shape: "flatO", frames: [[112, 148, -8], [114, 100, -8], [112, 112, -8], [114, 100, -8]] }] },
+      },
+      {
+        id: "word-water", label: "Water",
+        description: "Make the letter W and tap your index finger against your chin a couple of times.",
+        tip: "'W' at your chin, where you drink.",
+        anim: { hands: [{ shape: "n6", frames: [[126, 100, -10], [118, 100, -10], [126, 100, -10]] }] },
+      },
+      {
+        id: "word-more", label: "More",
+        description: "Pinch the fingertips and thumbs of both hands together (flattened O shapes), then tap the fingertips of both hands against each other.",
+        tip: "Two pinched hands tap — 'give me more'.",
+        anim: {
+          hands: [
+            { shape: "flatO", frames: [[140, 148, -78], [120, 148, -78], [140, 148, -78], [120, 148, -78]] },
+            { shape: "flatO", mirror: true, frames: [[80, 148, 78], [100, 148, 78], [80, 148, 78], [100, 148, 78]] },
+          ],
+        },
+      },
+      {
+        id: "word-bathroom", label: "Bathroom",
+        description: "Make the letter T (thumb between index and middle fingers in a fist) and shake it side to side.",
+        tip: "A shaking 'T' — for Toilet.",
+        anim: { hands: [{ shape: "shapeT", frames: [[148, 104, -16], [148, 104, 16], [148, 104, -16]] }] },
+      },
+      {
+        id: "word-learn", label: "Learn",
+        description: "Hold one palm flat and facing up. With your other hand, 'grab' information off the palm and lift it to your forehead.",
+        tip: "Picking up knowledge and putting it in your head.",
+        anim: {
+          hands: [
+            { shape: "flatO", frames: [[90, 152, 0], [104, 108, 0], [116, 56, 0]] },
+            { shape: "flat", frames: [[86, 178, 96], [86, 178, 96], [86, 178, 96]] },
+          ],
+        },
+      },
+      {
+        id: "word-good", label: "Good",
+        description: "Touch the fingertips of your flat hand to your chin, then bring the hand down to land on the upturned palm of your other hand.",
+        tip: "Starts like 'thank you', lands in your palm.",
+        anim: {
+          hands: [
+            { shape: "flat", frames: [[112, 98, 0], [112, 148, 24]] },
+            { shape: "flat", frames: [[112, 180, 96], [112, 180, 96]] },
+          ],
+        },
+      },
+      {
+        id: "word-bad", label: "Bad",
+        description: "Touch the fingertips of your flat hand to your chin, then flip the hand over and move it down and away.",
+        tip: "Starts like 'good', but flips away.",
+        anim: { hands: [{ shape: "flat", frames: [[112, 98, 0], [124, 146, 168]] }] },
+      },
+      {
+        id: "word-again", label: "Again / Repeat",
+        description: "Hold one palm flat and facing up. Bend your other hand and tap its fingertips into the open palm.",
+        tip: "Very useful when someone signs too fast!",
+        anim: {
+          hands: [
+            { shape: "bentB", frames: [[152, 116, -45], [106, 150, -92], [152, 116, -45]] },
+            { shape: "flat", frames: [[90, 174, 96], [90, 174, 96], [90, 174, 96]] },
+          ],
+        },
+      },
     ],
   },
 ];

@@ -1,0 +1,529 @@
+:root {
+  --bg: #f4f6fb;
+  --surface: #ffffff;
+  --ink: #1d2433;
+  --ink-soft: #5b6477;
+  --brand: #4f46e5;
+  --brand-soft: #eef0ff;
+  --accent: #0ea5e9;
+  --good: #16a34a;
+  --good-soft: #e8f7ee;
+  --warn: #dc2626;
+  --border: #e3e7f0;
+  --radius: 14px;
+  --shadow: 0 4px 18px rgba(29, 36, 51, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.55;
+}
+
+/* ---------- Header & navigation ---------- */
+
+header {
+  background: linear-gradient(120deg, #4f46e5, #7c3aed);
+  color: #fff;
+  padding: 1.4rem 1rem 0;
+  text-align: center;
+}
+
+header h1 {
+  margin: 0 0 0.2rem;
+  font-size: 1.7rem;
+  letter-spacing: 0.02em;
+}
+
+header p {
+  margin: 0 0 1rem;
+  opacity: 0.9;
+  font-size: 0.95rem;
+}
+
+nav {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  padding-bottom: 0.8rem;
+}
+
+nav a {
+  color: #fff;
+  text-decoration: none;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  background: rgba(255, 255, 255, 0.12);
+  transition: background 0.15s ease;
+}
+
+nav a:hover {
+  background: rgba(255, 255, 255, 0.28);
+}
+
+nav a.active {
+  background: #fff;
+  color: var(--brand);
+  font-weight: 600;
+}
+
+main {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 3rem;
+}
+
+.view {
+  display: none;
+}
+
+.view.active {
+  display: block;
+}
+
+h2 {
+  margin-top: 0;
+}
+
+.section-intro {
+  color: var(--ink-soft);
+  max-width: 46rem;
+}
+
+/* ---------- Cards ---------- */
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 0.9rem;
+  margin-top: 1.2rem;
+}
+
+.sign-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  position: relative;
+}
+
+.sign-card.learned {
+  border-color: var(--good);
+  background: var(--good-soft);
+}
+
+.sign-card .glyph {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--brand);
+}
+
+.sign-card p {
+  margin: 0;
+  font-size: 0.92rem;
+}
+
+.sign-card .tip {
+  color: var(--ink-soft);
+  font-style: italic;
+  font-size: 0.85rem;
+}
+
+.learn-toggle {
+  position: absolute;
+  top: 0.7rem;
+  right: 0.7rem;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--ink-soft);
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.learn-toggle:hover {
+  border-color: var(--good);
+  color: var(--good);
+}
+
+.sign-card.learned .learn-toggle {
+  background: var(--good);
+  border-color: var(--good);
+  color: #fff;
+}
+
+.category-title {
+  margin: 1.8rem 0 0.2rem;
+  font-size: 1.15rem;
+  color: var(--brand);
+}
+
+/* ---------- Home ---------- */
+
+.hero-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.9rem;
+  margin: 1.2rem 0;
+}
+
+.hero-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.1rem;
+  box-shadow: var(--shadow);
+  text-decoration: none;
+  color: var(--ink);
+  transition: transform 0.12s ease;
+}
+
+.hero-card:hover {
+  transform: translateY(-3px);
+}
+
+.hero-card .emoji {
+  font-size: 1.8rem;
+}
+
+.hero-card h3 {
+  margin: 0.4rem 0 0.2rem;
+}
+
+.hero-card p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+}
+
+.progress-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.1rem 1.3rem;
+  box-shadow: var(--shadow);
+  margin-bottom: 1.2rem;
+}
+
+.progress-bar {
+  background: var(--brand-soft);
+  border-radius: 999px;
+  height: 14px;
+  overflow: hidden;
+  margin: 0.5rem 0;
+}
+
+.progress-bar-fill {
+  background: linear-gradient(90deg, var(--brand), var(--accent));
+  height: 100%;
+  width: 0;
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+
+.progress-stats {
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+}
+
+.notice {
+  background: #fff8e6;
+  border: 1px solid #f0dca0;
+  border-radius: var(--radius);
+  padding: 0.9rem 1.1rem;
+  font-size: 0.92rem;
+  margin-top: 1.4rem;
+}
+
+.resource-list {
+  padding-left: 1.2rem;
+}
+
+.resource-list li {
+  margin-bottom: 0.3rem;
+}
+
+/* ---------- Flashcards ---------- */
+
+.flashcard-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.2rem;
+}
+
+.flashcard {
+  width: min(480px, 100%);
+  min-height: 260px;
+  perspective: 1200px;
+  cursor: pointer;
+}
+
+.flashcard-inner {
+  position: relative;
+  width: 100%;
+  min-height: 260px;
+  transition: transform 0.5s;
+  transform-style: preserve-3d;
+}
+
+.flashcard.flipped .flashcard-inner {
+  transform: rotateY(180deg);
+}
+
+.flashcard-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.4rem;
+  text-align: center;
+}
+
+.flashcard-face.back {
+  transform: rotateY(180deg);
+}
+
+.flashcard-face .big {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--brand);
+}
+
+.flashcard-face .type-chip {
+  position: absolute;
+  top: 0.8rem;
+  left: 0.9rem;
+  background: var(--brand-soft);
+  color: var(--brand);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+}
+
+.flashcard-face .hint {
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+  margin-top: 0.8rem;
+}
+
+.flashcard-controls {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.deck-picker {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+/* ---------- Buttons ---------- */
+
+button,
+.btn {
+  font: inherit;
+  border: none;
+  border-radius: 10px;
+  padding: 0.55rem 1.2rem;
+  cursor: pointer;
+  background: var(--brand);
+  color: #fff;
+  transition: filter 0.12s ease;
+}
+
+button:hover,
+.btn:hover {
+  filter: brightness(1.08);
+}
+
+button.secondary {
+  background: var(--surface);
+  color: var(--brand);
+  border: 1.5px solid var(--brand);
+}
+
+button.chip {
+  background: var(--surface);
+  color: var(--ink-soft);
+  border: 1.5px solid var(--border);
+  border-radius: 999px;
+  padding: 0.35rem 0.9rem;
+  font-size: 0.88rem;
+}
+
+button.chip.selected {
+  background: var(--brand);
+  border-color: var(--brand);
+  color: #fff;
+}
+
+/* ---------- Quiz ---------- */
+
+.quiz-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.4rem;
+  max-width: 640px;
+  margin: 1.2rem auto;
+}
+
+.quiz-progress {
+  color: var(--ink-soft);
+  font-size: 0.88rem;
+  margin-bottom: 0.6rem;
+}
+
+.quiz-question {
+  font-size: 1.05rem;
+  margin-bottom: 1rem;
+}
+
+.quiz-options {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.quiz-option {
+  text-align: left;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  color: var(--ink);
+  padding: 0.7rem 1rem;
+  border-radius: 10px;
+  font-size: 1rem;
+}
+
+.quiz-option:hover {
+  border-color: var(--brand);
+}
+
+.quiz-option.correct {
+  border-color: var(--good);
+  background: var(--good-soft);
+}
+
+.quiz-option.wrong {
+  border-color: var(--warn);
+  background: #fdecec;
+}
+
+.quiz-option:disabled {
+  cursor: default;
+}
+
+.quiz-feedback {
+  margin-top: 0.9rem;
+  font-weight: 600;
+}
+
+.quiz-feedback.good {
+  color: var(--good);
+}
+
+.quiz-feedback.bad {
+  color: var(--warn);
+}
+
+.quiz-score {
+  text-align: center;
+}
+
+.quiz-score .big-score {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--brand);
+  margin: 0.4rem 0;
+}
+
+/* ---------- Fingerspelling ---------- */
+
+.spell-input-row {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.spell-input-row input {
+  font: inherit;
+  padding: 0.55rem 0.9rem;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  flex: 1;
+  min-width: 200px;
+}
+
+.spell-input-row input:focus {
+  outline: 2px solid var(--brand);
+  border-color: var(--brand);
+}
+
+.spell-output {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  margin-top: 1.2rem;
+}
+
+.spell-letter {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 0.8rem;
+  width: 180px;
+  font-size: 0.85rem;
+}
+
+.spell-letter .glyph {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--brand);
+}
+
+footer {
+  text-align: center;
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+  padding: 1.5rem 1rem 2rem;
+}
+
+@media (max-width: 560px) {
+  header h1 {
+    font-size: 1.35rem;
+  }
+
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}

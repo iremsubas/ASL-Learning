@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HandStart — Learn ASL from Zero</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header>
+    <h1>🤟 HandStart</h1>
+    <p>American Sign Language for absolute beginners</p>
+    <nav id="main-nav">
+      <a href="#home">Home</a>
+      <a href="#alphabet">Alphabet</a>
+      <a href="#numbers">Numbers</a>
+      <a href="#words">Words</a>
+      <a href="#flashcards">Flashcards</a>
+      <a href="#quiz">Quiz</a>
+      <a href="#fingerspell">Fingerspell</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ================= HOME ================= -->
+    <section id="view-home" class="view">
+      <h2>Welcome! Start signing today 👋</h2>
+      <p class="section-intro">
+        New to American Sign Language? You're in the right place. This app walks you
+        through the essentials — the alphabet, numbers, and your first useful words —
+        then helps you lock them in with flashcards and quizzes. No experience needed.
+      </p>
+
+      <div class="progress-panel">
+        <strong>Your progress</strong>
+        <div class="progress-bar"><div class="progress-bar-fill" id="progress-fill"></div></div>
+        <div class="progress-stats" id="progress-stats"></div>
+        <div class="progress-stats" id="quiz-best"></div>
+      </div>
+
+      <div class="hero-cards">
+        <a class="hero-card" href="#alphabet">
+          <div class="emoji">🔤</div>
+          <h3>1. Learn the alphabet</h3>
+          <p>Fingerspelling is the foundation of ASL — 26 handshapes unlock any word.</p>
+        </a>
+        <a class="hero-card" href="#numbers">
+          <div class="emoji">🔢</div>
+          <h3>2. Count to ten</h3>
+          <p>Numbers come up constantly: ages, times, prices, phone numbers.</p>
+        </a>
+        <a class="hero-card" href="#words">
+          <div class="emoji">💬</div>
+          <h3>3. First words &amp; phrases</h3>
+          <p>Greetings, courtesy signs, family, and everyday essentials.</p>
+        </a>
+        <a class="hero-card" href="#flashcards">
+          <div class="emoji">🃏</div>
+          <h3>4. Practice with flashcards</h3>
+          <p>Flip through what you've learned until it sticks.</p>
+        </a>
+        <a class="hero-card" href="#quiz">
+          <div class="emoji">🏆</div>
+          <h3>5. Test yourself</h3>
+          <p>Take a quick quiz and track your best score.</p>
+        </a>
+        <a class="hero-card" href="#fingerspell">
+          <div class="emoji">✍️</div>
+          <h3>Bonus: Fingerspell anything</h3>
+          <p>Type a word and see how to spell it letter by letter.</p>
+        </a>
+      </div>
+
+      <h3>Beginner tips</h3>
+      <ul>
+        <li><strong>Use your dominant hand</strong> for one-handed signs and fingerspelling.</li>
+        <li><strong>Keep your hand steady</strong> near your shoulder when fingerspelling — don't bounce between letters.</li>
+        <li><strong>Facial expression matters!</strong> In ASL, your face carries grammar and tone, not just your hands.</li>
+        <li><strong>Practice a little every day.</strong> Five minutes daily beats an hour once a week.</li>
+      </ul>
+
+      <h3>Free video resources</h3>
+      <ul class="resource-list">
+        <li><a href="https://www.lifeprint.com/" target="_blank" rel="noopener">Lifeprint (ASL University)</a> — free structured lessons by Dr. Bill Vicars</li>
+        <li><a href="https://www.handspeak.com/" target="_blank" rel="noopener">Handspeak</a> — video dictionary and culture articles</li>
+        <li><a href="https://www.signasl.org/" target="_blank" rel="noopener">SignASL.org</a> — quick video lookup for individual signs</li>
+      </ul>
+
+      <div class="notice">
+        ⚠️ <strong>Note:</strong> ASL is a living visual language. The written descriptions
+        here are a study aid to get you started — always confirm signs with video resources
+        or, even better, Deaf signers and qualified instructors. Signs can also vary by region.
+      </div>
+    </section>
+
+    <!-- ================= ALPHABET ================= -->
+    <section id="view-alphabet" class="view">
+      <h2>The ASL Alphabet 🔤</h2>
+      <p class="section-intro">
+        These 26 handshapes let you spell out any English word — essential for names,
+        places, and words you don't know the sign for yet. All letters are made with one
+        hand (your dominant hand), palm generally facing the person you're talking to.
+        Tap the ✓ on a card once you can make the shape without looking.
+      </p>
+      <div class="card-grid" id="alphabet-grid"></div>
+    </section>
+
+    <!-- ================= NUMBERS ================= -->
+    <section id="view-numbers" class="view">
+      <h2>Numbers 1–10 🔢</h2>
+      <p class="section-intro">
+        ASL numbers 1–5 are signed with your palm facing <em>toward you</em>;
+        6–9 use the thumb touching a different fingertip. Heads up: some of these look
+        like letters (3 vs. W, 9 vs. F) — context makes the meaning clear.
+      </p>
+      <div class="card-grid" id="numbers-grid"></div>
+    </section>
+
+    <!-- ================= WORDS ================= -->
+    <section id="view-words" class="view">
+      <h2>First Words &amp; Phrases 💬</h2>
+      <p class="section-intro">
+        These are the signs you'll use most as a beginner. Remember to match your
+        facial expression to the meaning — a questioning face for questions, a warm
+        smile with greetings.
+      </p>
+      <div id="words-container"></div>
+    </section>
+
+    <!-- ================= FLASHCARDS ================= -->
+    <section id="view-flashcards" class="view">
+      <h2>Flashcards 🃏</h2>
+      <p class="section-intro">
+        Click a card to flip it. See the letter, number, or word — then try to make the
+        sign before flipping to check yourself.
+      </p>
+      <div class="deck-picker" id="deck-picker">
+        <button class="chip selected" data-deck="all">Everything</button>
+        <button class="chip" data-deck="alphabet">Alphabet</button>
+        <button class="chip" data-deck="numbers">Numbers</button>
+        <button class="chip" data-deck="words">Words</button>
+      </div>
+      <div class="flashcard-area">
+        <div class="flashcard" id="flashcard">
+          <div class="flashcard-inner">
+            <div class="flashcard-face front">
+              <span class="type-chip" id="card-type"></span>
+              <div class="big" id="card-front"></div>
+              <div class="hint">Click to reveal how to sign it</div>
+            </div>
+            <div class="flashcard-face back">
+              <span class="type-chip">How to sign it</span>
+              <p id="card-back"></p>
+              <p class="tip" id="card-tip"></p>
+            </div>
+          </div>
+        </div>
+        <div class="flashcard-controls">
+          <button class="secondary" id="card-prev">← Previous</button>
+          <button id="card-flip">Flip card</button>
+          <button class="secondary" id="card-next">Next →</button>
+          <button class="secondary" id="card-shuffle">🔀 Shuffle</button>
+        </div>
+        <div class="progress-stats" id="card-counter"></div>
+      </div>
+    </section>
+
+    <!-- ================= QUIZ ================= -->
+    <section id="view-quiz" class="view">
+      <h2>Quiz Yourself 🏆</h2>
+      <p class="section-intro">
+        Ten questions: read how a sign is made and pick what it means. Your best
+        score is saved on this device.
+      </p>
+      <div class="quiz-panel" id="quiz-panel"></div>
+    </section>
+
+    <!-- ================= FINGERSPELL ================= -->
+    <section id="view-fingerspell" class="view">
+      <h2>Fingerspelling Practice ✍️</h2>
+      <p class="section-intro">
+        Type any word — like your name! — and see how to spell it with the ASL
+        alphabet, letter by letter.
+      </p>
+      <div class="spell-input-row">
+        <input type="text" id="spell-input" maxlength="20"
+               placeholder="Type a word (e.g. your name)" autocomplete="off" />
+        <button class="secondary" id="spell-clear">Clear</button>
+      </div>
+      <div class="spell-output" id="spell-output"></div>
+    </section>
+  </main>
+
+  <footer>
+    Made for beginners taking their first steps into ASL.
+    Always verify signs with video resources or fluent signers.
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
